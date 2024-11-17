@@ -18,6 +18,11 @@
 # GetBrains
 *.idea/
 
+### IntelliJ IDEA ###
+out/
+!**/src/main/**/out/
+!**/src/test/**/out/
+
 # Build results
 [Dd]ebug/
 [Dd]ebugPublic/
