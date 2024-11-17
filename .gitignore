@@ -16,7 +16,7 @@
 *.ini
 
 # GetBrains
-*.idea/
+**.idea/
 
 ### IntelliJ IDEA ###
 out/
@@ -37,3 +37,5 @@ bld/
 [Oo]bj/
 [Ll]og/
 [Ll]ogs/
+
+**.db
