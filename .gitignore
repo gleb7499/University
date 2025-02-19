@@ -15,6 +15,10 @@
 *.sln.docstates
 *.ini
 
+**/.idea/
+**/gradle.properties
+**.zip
+
 # GetBrains
 **.idea/
 
