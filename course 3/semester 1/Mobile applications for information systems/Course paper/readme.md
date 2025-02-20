@@ -44,13 +44,13 @@
 ### 📌 Структура базы данных
 
 <div align="center">
-<img src="./images/Диаграмма%20БД.jpeg" style="max-width: 90%; height: auto;">
+<img src="./images/Диаграмма%20БД.jpeg" width="300">
 </div>
 
 ### 🔄 Схема алгоритмов приложения
 
 <div align="center">
-<img src="./images/Схема%20алгоритмов.jpg" style="max-width: 90%; height: auto;">
+<img src="./images/Схема%20алгоритмов.jpg" width="300">
 </div>
 
 ## 📲 Примеры интерфейса
