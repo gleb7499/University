@@ -4,7 +4,7 @@
 Дисциплина **"Веб-технологии"** посвящена изучению основ веб-разработки, включая работу с **HTML, CSS, JavaScript** и современными **фреймворками**. В рамках курса студенты осваивают создание пользовательских интерфейсов, работу с UI-библиотеками, применение клиентского JavaScript и разработку интерактивных веб-приложений.
 
 Исходные коды всех лабораторных работ находятся в репозитории:  
-🔗 [GitHub-репозиторий](https://github.com/gleb7499/web-technologies/tree/main)
+🔗 [GitHub-репозиторий](https://github.com/gleb7499/web-technologies/tree/main/subgroup1/Loginov_Gleb)
 
 ---
 
@@ -46,7 +46,7 @@
 **🎯 Цель:** Освоить основы **JavaScript** и его применение в веб-разработке.
 
 **📌 Основное задание:**  
-📄 **Решение задач, представленных в файле** [README.md](https://github.com/gleb7499/web-technologies/tree/main/subgroup1/Loginov_Gleb/Lab_3/readme.md).
+📄 **Решение 10 алгоритмических задач, представленных в файле** [readme.md](https://github.com/gleb7499/web-technologies/tree/main/subgroup1/Loginov_Gleb/Lab_3/readme.md).
 
 **🛠️ Технологии:** JavaScript, работа с DOM, функции и массивы.
 
