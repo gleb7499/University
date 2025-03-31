@@ -1,0 +1,15 @@
+body {
+    background-color: #f0ebf8;
+}
+
+.border-top-purple {
+    border-top: 8px solid #965ff5;
+}
+
+.top {
+    background-color: #673ab7;
+}
+
+textarea {
+    resize: none;
+}
