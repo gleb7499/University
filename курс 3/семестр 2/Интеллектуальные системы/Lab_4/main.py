@@ -8,8 +8,8 @@ class Game:
         self.sheriffsList = list()
         self.tradersList = list()
 
-    def start(self, quantity):
-        print("Итерация\t\tШериф\t\tТорговец")
+    def start(self, quantity: int):
+        print("Итерация\t\tШериф\t\t\tТорговец")
 
         for i in range(quantity):
             sheriffsAction = self.sheriff.check()
@@ -80,5 +80,6 @@ class Trader:
 
 if __name__ == '__main__':
     game = Game()
-    game.start(10)
+    roundsNum = int(input("Количество раундов -> "))
+    game.start(roundsNum)
     game.printResults()
