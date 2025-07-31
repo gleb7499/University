@@ -1,0 +1,5 @@
+ADD file1.txt 300
+ADD file2.doc 500
+DELETE file1.txt
+ADD file3.jpg 700
+ADD file4.pdf 100
