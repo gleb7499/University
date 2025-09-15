@@ -37,7 +37,6 @@ COPY src/app.py ./
 
 EXPOSE 8062
 
-# Устанавливаем wget для healthcheck
 RUN apk add --no-cache wget
 
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \

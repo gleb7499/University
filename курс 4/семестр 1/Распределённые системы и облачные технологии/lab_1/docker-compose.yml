@@ -1,6 +1,6 @@
 # Слаг для именования
 # Используем явное дублирование вместо anchors для совместимости
-# slug: ас-63-220018-v14
+# slug: as63-220018-v14
 
 volumes:
   data_v14:
@@ -52,4 +52,4 @@ services:
       - as63-net
     labels:
       org.bstu.owner: "gleb7499"
-      org.bstu.student.slug: "ас-63-220018-v14"
+      org.bstu.student.slug: "as63-220018-v14"

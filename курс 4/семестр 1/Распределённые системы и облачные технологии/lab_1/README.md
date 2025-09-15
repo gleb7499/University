@@ -108,7 +108,7 @@ curl http://localhost:8062/healthz
 - Email: as006315@g.bstu.by  
 - GitHub username: gleb7499  
 - Вариант: 14  
-- Дата выполнения: 13.09.2025  
+- Дата выполнения: 16.09.2025  
 - ОС: Windows 11 24H2  
 - Docker Desktop/Engine: v4.45.0  
 
@@ -149,3 +149,36 @@ docker inspect --format='{{json .State.Health}}' as63-220018-v14-app
 # Отправка POST на /echo
 curl -X POST http://localhost:8062/echo -H "Content-Type: application/json" -d '{"msg":"hello"}'
 ```
+
+## 10. Имя проекта Docker Compose
+
+Иногда при запуске `make up` в директории с пробелами или не-ASCII символами (например, кириллицей) Docker Compose может вывести ошибку:
+
+```
+project name must not be empty
+```
+
+Чтобы избежать этой проблемы, в `Makefile` добавлена переменная `COMPOSE_PROJECT_NAME`, по умолчанию равная `as63-220018-v14`. Все команды `docker compose` теперь вызываются с явным указанием `--project-name`. Это гарантирует стабильные имена контейнеров, сети и volume независимо от пути к каталогу.
+
+Переопределить имя проекта можно так:
+
+```powershell
+COMPOSE_PROJECT_NAME=myexp make up
+
+# или для PowerShell (переменная только на время команды)
+$env:COMPOSE_PROJECT_NAME='testproj'; make up
+```
+
+Проверить, что используется нужное имя:
+
+```powershell
+make ps
+```
+
+Если нужно полностью удалить созданные ресурсы (контейнеры/сеть/том) для альтернативного имени проекта — укажите то же имя и выполните:
+
+```powershell
+COMPOSE_PROJECT_NAME=testproj make down
+```
+
+Причина ошибки: Docker пытается вычислить имя проекта из имени директории, но в редких случаях (особенно Windows + локали) это может вернуть пустое или некорректное значение. Явное указание имени делает процесс детерминированным.

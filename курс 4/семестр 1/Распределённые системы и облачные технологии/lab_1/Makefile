@@ -3,17 +3,18 @@
 # Требования: Docker Desktop, PowerShell 5.1+/Core.
 
 SLUG=as63-220018-v14
+COMPOSE_PROJECT_NAME?=$(SLUG)
 IMAGE=gleb7499/lab1-v14
 PORT=8062
 APP_CONTAINER=$(SLUG)-app
 DB_CONTAINER=$(SLUG)-db
-COMPOSE=docker compose
+COMPOSE=docker compose --project-name $(COMPOSE_PROJECT_NAME)
 
 POWERSHELL=powershell -NoLogo -NoProfile -Command "chcp 65001 > $null; [Console]::OutputEncoding=[System.Text.Encoding]::UTF8; $$OutputEncoding = New-Object System.Text.UTF8Encoding;"
 
 .DEFAULT_GOAL := help
 
-.PHONY: help build up start logs app-log db-log ps stop down rebuild clean prune health inspect-health curl-health kill-term graceful-test shell image-size win-check
+.PHONY: help build up start logs app-log db-log ps stiop down rebuild clean prune health inspect-health curl-health kill-term graceful-test shell image-size win-check
 
 help:
 	@echo "Available targets:"
@@ -34,7 +35,7 @@ build:
 	@docker build -t $(IMAGE) -f Dockerfile .
 
 up start:
-	@echo "==> Starting stack (app + db)"
+	@echo "==> Starting stack (app + db) (project=$(COMPOSE_PROJECT_NAME))"
 	@$(COMPOSE) up -d --build
 	@$(COMPOSE) ps
 
@@ -78,7 +79,7 @@ shell:
 	@docker exec -it $(APP_CONTAINER) sh || true
 
 down:
-	@echo "==> Stopping and removing stack"
+	@echo "==> Stopping and removing stack (project=$(COMPOSE_PROJECT_NAME))"
 	@$(COMPOSE) down
 
 clean prune:

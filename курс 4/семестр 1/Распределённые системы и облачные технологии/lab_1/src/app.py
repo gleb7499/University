@@ -4,7 +4,7 @@ import sys
 import logging
 import threading
 import time
-from datetime import datetime
+from datetime import datetime, timezone
 from flask import Flask, jsonify, request
 
 # Константы ENV
@@ -36,7 +36,11 @@ def log_startup_metadata():
     # DB connection info (masked) если есть
     db_url = os.getenv("DATABASE_URL")
     if db_url:
-        safe_url = db_url.replace(os.getenv("POSTGRES_PASSWORD", ""), "***") if "POSTGRES_PASSWORD" in os.environ else db_url
+        password = os.getenv("POSTGRES_PASSWORD")
+        if password:
+            safe_url = db_url.replace(password, "***")
+        else:
+            safe_url = db_url
         logger.info("DATABASE_URL: %s", safe_url)
     for k, v in os.environ.items():
         if k.startswith("STU_"):
@@ -46,7 +50,7 @@ def log_startup_metadata():
 
 @app.route("/healthz", methods=["GET"])  # Health endpoint
 def healthz():
-    return jsonify({"status": "ok", "timestamp": datetime.utcnow().isoformat() + "Z"}), 200
+    return jsonify({"status": "ok", "timestamp": datetime.now(timezone.utc).isoformat()}), 200
 
 
 @app.route("/")
@@ -67,7 +71,7 @@ def index():
 @app.route("/echo", methods=["POST"])  # небольшая вспомогательная ручка
 def echo():
     data = request.get_json(silent=True) or {}
-    return jsonify({"echo": data, "received_at": datetime.utcnow().isoformat() + "Z"})
+    return jsonify({"echo": data, "received_at": datetime.now(timezone.utc).isoformat()})
 
 
 def initiate_graceful_shutdown(signum, frame):  # noqa: ARG001
@@ -77,6 +81,9 @@ def initiate_graceful_shutdown(signum, frame):  # noqa: ARG001
 
 # Flask dev server не умеет корректно ловить SIGTERM внутри reloader, поэтому используем встроенный сервер без reloader.
 
+SERVER_TIMEOUT = 1
+SHUTDOWN_POLL_INTERVAL = 0.2
+
 def run_server():
     log_startup_metadata()
     logger.info("Starting Flask server on %s:%d", HOST, PORT)
@@ -84,7 +91,7 @@ def run_server():
     from werkzeug.serving import make_server
 
     http_server = make_server(HOST, PORT, app)
-    http_server.timeout = 1
+    http_server.timeout = SERVER_TIMEOUT
 
     def serve_forever():
         while not shutdown_requested.is_set():
@@ -96,7 +103,7 @@ def run_server():
 
     try:
         while thread.is_alive():
-            time.sleep(0.2)
+            time.sleep(SHUTDOWN_POLL_INTERVAL)
     except KeyboardInterrupt:
         logger.warning("KeyboardInterrupt caught. Shutting down...")
         shutdown_requested.set()
