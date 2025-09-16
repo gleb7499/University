@@ -81,8 +81,7 @@ def initiate_graceful_shutdown(signum, frame):  # noqa: ARG001
 
 # Flask dev server не умеет корректно ловить SIGTERM внутри reloader, поэтому используем встроенный сервер без reloader.
 
-SERVER_TIMEOUT = 1
-SHUTDOWN_POLL_INTERVAL = 0.2
+SERVER_TIMEOUT = 1  # seconds timeout for per-request wait inside handle_request
 
 def run_server():
     log_startup_metadata()
@@ -93,17 +92,12 @@ def run_server():
     http_server = make_server(HOST, PORT, app)
     http_server.timeout = SERVER_TIMEOUT
 
-    def serve_forever():
+    try:
+        # Главный цикл: обрабатываем по одному запросу с таймаутом.
+        # handle_request() блокируется максимум на http_server.timeout секунд,
+        # что позволяет регулярно проверять флаг завершения.
         while not shutdown_requested.is_set():
             http_server.handle_request()
-        logger.info("Stop accepting new connections. Shutdown flag set.")
-
-    thread = threading.Thread(target=serve_forever, daemon=True)
-    thread.start()
-
-    try:
-        while thread.is_alive():
-            time.sleep(SHUTDOWN_POLL_INTERVAL)
     except KeyboardInterrupt:
         logger.warning("KeyboardInterrupt caught. Shutting down...")
         shutdown_requested.set()
